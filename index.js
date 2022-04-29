@@ -22,12 +22,21 @@ async function run() {
     try {
         await client.connect()
         const productsCollection = client.db("emaJhonServices").collection('products')
-
+        // Load all data
         app.get('/products', async(req, res) => {
             const query = {}
             const cursor = productsCollection.find(query)
             const result = await cursor.toArray()
             res.send(result)
+        })
+
+        // load data length
+        app.get('/productsLength', async (req, res) => {
+            const query = {}
+            const cursor = productsCollection.find({})
+            // const result = cursor.toArray()
+            const productsLength = await cursor.count()
+            res.send({productsLength})
         })
         app.listen(port, () => {
             console.log('Listing', port);
